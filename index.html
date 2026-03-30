@@ -292,12 +292,14 @@
         left: 0;
         right: 0;
         /* Push buttons up above the home indicator */
+        height: auto;
         padding-bottom: env(safe-area-inset-bottom, 0px);
-        z-index: 20;
+        z-index: 100;
         box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.06);
       }
 
       .nav-btn {
+        height: 64px;
         flex: 1;
         display: flex;
         flex-direction: column;
@@ -313,10 +315,9 @@
         font-weight: 500;
         transition: color 0.15s;
         -webkit-tap-highlight-color: transparent;
-        position: relative;
       }
 
-      .nav-btn svg {
+      .nbac .nav-btn svg {
         width: 24px;
         height: 24px;
         stroke: currentColor;
