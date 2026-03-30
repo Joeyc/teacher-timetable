@@ -50,6 +50,9 @@ body {
   -webkit-overflow-scrolling: touch;
   /* Leave room for the fixed bottom nav + home indicator */
   padding-bottom: calc(54px + env(safe-area-inset-bottom, 0px));
+  /* Needed so absolutely-positioned .view children are contained here,
+     not the viewport — ensures safe-area padding-top on #app takes effect */
+  position: relative;
 }
 
 /* ── Views ── */
