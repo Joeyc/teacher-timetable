@@ -1,0 +1,49 @@
+{
+  "myTimetable": {
+    "label": "My Teaching Timetable",
+    "slots": [
+      { "time": "08:00", "mon": "Math",    "tue": "",        "wed": "Science", "thu": "",        "fri": "Math"    },
+      { "time": "09:00", "mon": "",        "tue": "English", "wed": "",        "thu": "Math",    "fri": ""        },
+      { "time": "10:00", "mon": "Science", "tue": "",        "wed": "English", "thu": "",        "fri": "Science" },
+      { "time": "11:00", "mon": "",        "tue": "Math",    "wed": "",        "thu": "English", "fri": ""        }
+    ]
+  },
+  "classes": [
+    {
+      "id": "class1",
+      "label": "Class 1",
+      "slots": [
+        { "time": "08:00", "mon": "Math",    "tue": "Art",    "wed": "PE",      "thu": "Music",  "fri": "Math"    },
+        { "time": "09:00", "mon": "English", "tue": "Math",   "wed": "Science", "thu": "English","fri": "Science" },
+        { "time": "10:00", "mon": "Science", "tue": "English","wed": "Math",    "thu": "Art",    "fri": "English" }
+      ]
+    },
+    {
+      "id": "class2",
+      "label": "Class 2",
+      "slots": [
+        { "time": "08:00", "mon": "English", "tue": "Math",    "wed": "Music",  "thu": "Science","fri": "Art"     },
+        { "time": "09:00", "mon": "Science", "tue": "PE",      "wed": "Math",   "thu": "Art",    "fri": "Math"    },
+        { "time": "10:00", "mon": "Math",    "tue": "Science", "wed": "English","thu": "Math",   "fri": "Science" }
+      ]
+    },
+    {
+      "id": "class3",
+      "label": "Class 3",
+      "slots": [
+        { "time": "08:00", "mon": "Art",     "tue": "English", "wed": "Math",   "thu": "PE",     "fri": "English" },
+        { "time": "09:00", "mon": "Math",    "tue": "Science", "wed": "Art",    "thu": "Math",   "fri": "Science" },
+        { "time": "10:00", "mon": "English", "tue": "Math",    "wed": "Science","thu": "English","fri": "Math"    }
+      ]
+    },
+    {
+      "id": "class4",
+      "label": "Class 4",
+      "slots": [
+        { "time": "08:00", "mon": "Science", "tue": "Art",     "wed": "English","thu": "Math",   "fri": "PE"      },
+        { "time": "09:00", "mon": "Art",     "tue": "English", "wed": "Science","thu": "Science","fri": "Math"    },
+        { "time": "10:00", "mon": "Math",    "tue": "Math",    "wed": "Art",    "thu": "English","fri": "Science" }
+      ]
+    }
+  ]
+}
