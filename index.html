@@ -6,653 +6,108 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
-    <meta name="theme-color" content="#2563eb" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="theme-color" content="#F5F2EE" />
+    <meta name="mobile-web-app-capable" content="yes" />
     <meta
       name="apple-mobile-web-app-status-bar-style"
       content="black-translucent"
     />
     <meta name="apple-mobile-web-app-title" content="Timetable" />
     <link rel="manifest" href="manifest.json" />
-    <link rel="apple-touch-icon" href="icons/icon-192.png" />
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png" />
+    <link rel="shortcut icon" href="icons/favicon.ico" type="image/x-icon" />
     <title>Timetable</title>
-    <style>
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-
-      :root {
-        --primary: #2563eb;
-        --primary-dark: #1d4ed8;
-        --primary-light: #eff6ff;
-        --text: #1e293b;
-        --text-muted: #64748b;
-        --bg: #f8fafc;
-        --surface: #ffffff;
-        --border: #e2e8f0;
-        --nav-height: 64px;
-        --safe-bottom: env(safe-area-inset-bottom, 0px);
-      }
-
-      html,
-      body {
-        /* Use dvh to ensure it's exactly the visible screen height */
-        height: 100dvh;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        background-color: var(
-          --surface
-        ); /* Match your nav color to hide any "flicker" gap */
-      }
-
-      /* ── App shell ── */
-      #app {
-        display: flex;
-        flex-direction: column;
-        height: 100dvh; /* Force the app container to be exactly the screen size */
-        min-height: 100vh;
-        min-height: -webkit-fill-available;
-      }
-
-      /* ── Top header ── */
-      #header {
-        background: var(--primary);
-        color: white;
-        padding: 16px 20px;
-        padding-top: calc(16px + env(safe-area-inset-top, 0px));
-        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
-        flex-shrink: 0;
-        z-index: 10;
-      }
-
-      #header h1 {
-        font-size: 20px;
-        font-weight: 700;
-        letter-spacing: -0.3px;
-      }
-
-      #header p {
-        font-size: 13px;
-        opacity: 0.85;
-        margin-top: 2px;
-      }
-
-      /* ── Page content area ── */
-      #content {
-        flex: 1;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-        /* Leave room for the fixed bottom nav + home indicator */
-        padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px));
-      }
-
-      /* ── Pages ── */
-      .page {
-        display: none;
-        padding: 20px 16px;
-        min-height: 100%;
-        animation: fadeIn 0.2s ease;
-      }
-
-      .page.active {
-        display: block;
-      }
-
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(6px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      /* ── Card ── */
-      .card {
-        background: var(--surface);
-        border-radius: 14px;
-        padding: 20px;
-        margin-bottom: 16px;
-        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
-        border: 1px solid var(--border);
-      }
-
-      .card h2 {
-        font-size: 17px;
-        font-weight: 600;
-        margin-bottom: 8px;
-      }
-
-      .card p {
-        font-size: 14px;
-        color: var(--text-muted);
-        line-height: 1.5;
-      }
-
-      /* ── Home quick-stats ── */
-      .stats-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
-        margin-bottom: 16px;
-      }
-
-      .stat-card {
-        background: var(--surface);
-        border-radius: 14px;
-        padding: 18px 16px;
-        border: 1px solid var(--border);
-        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
-        text-align: center;
-      }
-
-      .stat-card .number {
-        font-size: 32px;
-        font-weight: 700;
-        color: var(--primary);
-        line-height: 1;
-      }
-
-      .stat-card .label {
-        font-size: 12px;
-        color: var(--text-muted);
-        margin-top: 6px;
-      }
-
-      /* ── Section heading ── */
-      .section-title {
-        font-size: 13px;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.6px;
-        color: var(--text-muted);
-        margin-bottom: 10px;
-        margin-top: 4px;
-      }
-
-      /* ── Timetable table ── */
-      .timetable-wrap {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        border-radius: 12px;
-        border: 1px solid var(--border);
-      }
-
-      table {
-        border-collapse: collapse;
-        width: 100%;
-        min-width: 340px;
-        background: var(--surface);
-        font-size: 13px;
-      }
-
-      table th {
-        background: var(--primary);
-        color: white;
-        padding: 10px 12px;
-        text-align: center;
-        font-weight: 600;
-        white-space: nowrap;
-      }
-
-      table th:first-child {
-        text-align: left;
-        border-radius: 12px 0 0 0;
-      }
-
-      table th:last-child {
-        border-radius: 0 12px 0 0;
-      }
-
-      table td {
-        padding: 10px 12px;
-        border-bottom: 1px solid var(--border);
-        vertical-align: middle;
-      }
-
-      table tr:last-child td {
-        border-bottom: none;
-      }
-
-      table tr:nth-child(even) td {
-        background: var(--primary-light);
-      }
-
-      .time-col {
-        font-weight: 600;
-        color: var(--primary-dark);
-        white-space: nowrap;
-      }
-
-      .subject-tag {
-        display: inline-block;
-        padding: 3px 10px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 600;
-        background: var(--primary-light);
-        color: var(--primary-dark);
-      }
-
-      /* ── Class selector tabs ── */
-      .class-tabs {
-        display: flex;
-        gap: 8px;
-        overflow-x: auto;
-        padding-bottom: 4px;
-        scrollbar-width: none;
-        margin-bottom: 14px;
-      }
-
-      .class-tabs::-webkit-scrollbar {
-        display: none;
-      }
-
-      .class-tab {
-        flex-shrink: 0;
-        padding: 8px 18px;
-        border-radius: 20px;
-        border: 2px solid var(--border);
-        background: var(--surface);
-        color: var(--text-muted);
-        font-size: 14px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.15s;
-      }
-
-      .class-tab.active {
-        background: var(--primary);
-        color: white;
-        border-color: var(--primary);
-      }
-
-      .class-view {
-        display: none;
-      }
-      .class-view.active {
-        display: block;
-      }
-
-      /* ── Bottom nav ── */
-      #nav {
-        display: flex;
-        background: var(--surface);
-        border-top: 1px solid var(--border);
-        /* Fixed to actual screen bottom — reliable on all iOS standalone modes */
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        /* Push buttons up above the home indicator */
-        height: auto;
-        padding-bottom: env(safe-area-inset-bottom, 0px);
-        z-index: 100;
-        box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.06);
-      }
-
-      .nav-btn {
-        height: 54px;
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 4px;
-        padding: 10px 4px;
-        background: none;
-        border: none;
-        cursor: pointer;
-        color: var(--text-muted);
-        font-size: 11px;
-        font-weight: 500;
-        transition: color 0.15s;
-        -webkit-tap-highlight-color: transparent;
-      }
-
-      .nbac .nav-btn svg {
-        width: 24px;
-        height: 24px;
-        stroke: currentColor;
-        fill: none;
-        stroke-width: 1.8;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-      }
-
-      .nav-btn.active {
-        color: var(--primary);
-      }
-
-      .nav-btn.active::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 32px;
-        height: 3px;
-        background: var(--primary);
-        border-radius: 0 0 4px 4px;
-      }
-
-      /* ── Placeholder empty state ── */
-      .empty-state {
-        text-align: center;
-        padding: 40px 20px;
-        color: var(--text-muted);
-      }
-
-      .empty-state svg {
-        width: 48px;
-        height: 48px;
-        stroke: var(--border);
-        fill: none;
-        stroke-width: 1.5;
-        margin-bottom: 12px;
-      }
-
-      .empty-state p {
-        font-size: 14px;
-      }
-    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <!-- Loading screen -->
+    <div id="loading">
+      <div class="spinner"></div>
+      <p id="loading-msg">Loading schedule…</p>
+    </div>
+
+    <!-- App shell -->
     <div id="app">
-      <!-- Header -->
-      <header id="header">
-        <h1 id="page-title">Home</h1>
-        <p id="page-subtitle">Welcome back, Joeyc</p>
-      </header>
-
-      <!-- Content -->
-      <main id="content">
+      <main id="views">
         <!-- HOME PAGE -->
-        <section id="page-home" class="page active">
-          <div class="stats-grid">
-            <div class="stat-card">
-              <div class="number">5</div>
-              <div class="label">Classes</div>
+        <section class="view active" id="view-today">
+          <div class="page-hdr">
+            <div class="page-title" id="today-title">Today</div>
+            <div class="page-sub" id="today-sub">—</div>
+          </div>
+          <div class="next-banner inactive" id="next-banner">
+            <div class="pulse-dot off" id="pulse-dot"></div>
+            <div>
+              <div class="next-lbl">Next Class</div>
+              <div class="next-name" id="next-name">—</div>
+              <div class="next-cd" id="next-cd"></div>
             </div>
-            <div class="stat-card">
-              <div class="number">5</div>
-              <div class="label">Days / week</div>
-            </div>
           </div>
-
-          <p class="section-title">Overview</p>
-          <div class="card">
-            <h2>📅 Timetable App</h2>
-            <p>
-              Use the bottom navigation to view your personal teaching timetable
-              or browse timetables for all 4 classes.
-            </p>
-          </div>
-          <div class="card">
-            <h2>💡 Getting Started</h2>
-            <p>
-              Timetable data is loaded from a JSON file. Tap
-              <strong>My Timetable</strong> to see your schedule, or
-              <strong>Classes</strong> to browse each class.
-            </p>
-          </div>
+          <div class="sec-lbl">Today's Classes</div>
+          <div class="class-list" id="today-list"></div>
+          <div class="sec-lbl" id="tmr-lbl">Tomorrow</div>
+          <div class="class-list" id="tomorrow-list"></div>
         </section>
 
         <!-- MY TIMETABLE PAGE -->
-        <section id="page-mine" class="page">
-          <p class="section-title">Your Teaching Schedule</p>
-          <div class="timetable-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Time</th>
-                  <th>Mon</th>
-                  <th>Tue</th>
-                  <th>Wed</th>
-                  <th>Thu</th>
-                  <th>Fri</th>
-                </tr>
-              </thead>
-              <tbody id="my-timetable-body">
-                <!-- Populated by JS / JSON -->
-                <tr>
-                  <td class="time-col">08:00</td>
-                  <td><span class="subject-tag">Math</span></td>
-                  <td>—</td>
-                  <td><span class="subject-tag">Science</span></td>
-                  <td>—</td>
-                  <td><span class="subject-tag">Math</span></td>
-                </tr>
-                <tr>
-                  <td class="time-col">09:00</td>
-                  <td>—</td>
-                  <td><span class="subject-tag">English</span></td>
-                  <td>—</td>
-                  <td><span class="subject-tag">Math</span></td>
-                  <td>—</td>
-                </tr>
-                <tr>
-                  <td class="time-col">10:00</td>
-                  <td><span class="subject-tag">Science</span></td>
-                  <td>—</td>
-                  <td><span class="subject-tag">English</span></td>
-                  <td>—</td>
-                  <td><span class="subject-tag">Science</span></td>
-                </tr>
-                <tr>
-                  <td class="time-col">11:00</td>
-                  <td>—</td>
-                  <td><span class="subject-tag">Math</span></td>
-                  <td>—</td>
-                  <td><span class="subject-tag">English</span></td>
-                  <td>—</td>
-                </tr>
-              </tbody>
-            </table>
+        <section class="view" id="view-mine">
+          <div class="page-hdr">
+            <div class="page-title">My Timetable</div>
+            <div class="page-sub" id="mine-term">—</div>
           </div>
-          <div class="card" style="margin-top: 16px">
-            <p>
-              This timetable will be loaded dynamically from your
-              <strong>timetable.json</strong> file once it's set up.
-            </p>
-          </div>
+          <div class="week-wrap" id="mine-week"></div>
         </section>
 
         <!-- CLASS TIMETABLES PAGE -->
-        <section id="page-classes" class="page">
-          <div class="class-tabs">
-            <button class="class-tab active" onclick="showClass('class1')">
-              Class 1
-            </button>
-            <button class="class-tab" onclick="showClass('class2')">
-              Class 2
-            </button>
-            <button class="class-tab" onclick="showClass('class3')">
-              Class 3
-            </button>
-            <button class="class-tab" onclick="showClass('class4')">
-              Class 4
-            </button>
+        <section class="view" id="view-overview">
+          <div class="page-hdr">
+            <div class="page-title">All Classes</div>
+            <div class="page-sub" id="ov-term">—</div>
           </div>
-
-          <div id="class1" class="class-view active">
-            <p class="section-title">Class 1 Timetable</p>
-            <div class="timetable-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Time</th>
-                    <th>Mon</th>
-                    <th>Tue</th>
-                    <th>Wed</th>
-                    <th>Thu</th>
-                    <th>Fri</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td class="time-col">08:00</td>
-                    <td><span class="subject-tag">Math</span></td>
-                    <td><span class="subject-tag">Art</span></td>
-                    <td><span class="subject-tag">PE</span></td>
-                    <td><span class="subject-tag">Music</span></td>
-                    <td><span class="subject-tag">Math</span></td>
-                  </tr>
-                  <tr>
-                    <td class="time-col">09:00</td>
-                    <td><span class="subject-tag">English</span></td>
-                    <td><span class="subject-tag">Math</span></td>
-                    <td><span class="subject-tag">Science</span></td>
-                    <td><span class="subject-tag">English</span></td>
-                    <td><span class="subject-tag">Science</span></td>
-                  </tr>
-                  <tr>
-                    <td class="time-col">10:00</td>
-                    <td><span class="subject-tag">Science</span></td>
-                    <td><span class="subject-tag">English</span></td>
-                    <td><span class="subject-tag">Math</span></td>
-                    <td><span class="subject-tag">Art</span></td>
-                    <td><span class="subject-tag">English</span></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <div id="class2" class="class-view">
-            <p class="section-title">Class 2 Timetable</p>
-            <div class="empty-state">
-              <svg viewBox="0 0 24 24">
-                <rect x="3" y="4" width="18" height="18" rx="2" />
-                <line x1="16" y1="2" x2="16" y2="6" />
-                <line x1="8" y1="2" x2="8" y2="6" />
-                <line x1="3" y1="10" x2="21" y2="10" />
-              </svg>
-              <p>Class 2 data will load from timetable.json</p>
-            </div>
-          </div>
-
-          <div id="class3" class="class-view">
-            <p class="section-title">Class 3 Timetable</p>
-            <div class="empty-state">
-              <svg viewBox="0 0 24 24">
-                <rect x="3" y="4" width="18" height="18" rx="2" />
-                <line x1="16" y1="2" x2="16" y2="6" />
-                <line x1="8" y1="2" x2="8" y2="6" />
-                <line x1="3" y1="10" x2="21" y2="10" />
-              </svg>
-              <p>Class 3 data will load from timetable.json</p>
-            </div>
-          </div>
-
-          <div id="class4" class="class-view">
-            <p class="section-title">Class 4 Timetable</p>
-            <div class="empty-state">
-              <svg viewBox="0 0 24 24">
-                <rect x="3" y="4" width="18" height="18" rx="2" />
-                <line x1="16" y1="2" x2="16" y2="6" />
-                <line x1="8" y1="2" x2="8" y2="6" />
-                <line x1="3" y1="10" x2="21" y2="10" />
-              </svg>
-              <p>Class 4 data will load from timetable.json</p>
-            </div>
-          </div>
+          <div class="day-selector" id="day-selector"></div>
+          <div class="grp-toggle" id="grp-toggle"></div>
+          <div class="ov-wrap" id="ov-wrap"></div>
         </section>
       </main>
 
       <!-- Bottom Nav -->
-      <nav id="nav">
-        <button class="nav-btn active" onclick="navigate('home')" id="nav-home">
+      <nav id="tabbar">
+        <div class="tab active" data-tab="today" onclick="switchTab('today')">
           <svg viewBox="0 0 24 24">
-            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-            <polyline points="9 22 9 12 15 12 15 22" />
+            <circle cx="12" cy="12" r="3.5" />
+            <line x1="12" y1="2" x2="12" y2="5" />
+            <line x1="12" y1="19" x2="12" y2="22" />
+            <line x1="2" y1="12" x2="5" y2="12" />
+            <line x1="19" y1="12" x2="22" y2="12" />
           </svg>
-          Home
-        </button>
-        <button class="nav-btn" onclick="navigate('mine')" id="nav-mine">
+          <span>Today</span>
+        </div>
+        <div class="tab" data-tab="mine" onclick="switchTab('mine')">
           <svg viewBox="0 0 24 24">
             <rect x="3" y="4" width="18" height="18" rx="2" />
             <line x1="16" y1="2" x2="16" y2="6" />
             <line x1="8" y1="2" x2="8" y2="6" />
             <line x1="3" y1="10" x2="21" y2="10" />
-            <line x1="8" y1="14" x2="8" y2="14" />
-            <line x1="12" y1="14" x2="12" y2="14" />
-            <line x1="16" y1="14" x2="16" y2="14" />
           </svg>
-          My Timetable
-        </button>
-        <button class="nav-btn" onclick="navigate('classes')" id="nav-classes">
+          <span>My Schedule</span>
+        </div>
+        <div class="tab" data-tab="overview" onclick="switchTab('overview')">
           <svg viewBox="0 0 24 24">
-            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-            <circle cx="9" cy="7" r="4" />
-            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+            <rect x="3" y="3" width="7" height="7" rx="1.5" />
+            <rect x="14" y="3" width="7" height="7" rx="1.5" />
+            <rect x="3" y="14" width="7" height="7" rx="1.5" />
+            <rect x="14" y="14" width="7" height="7" rx="1.5" />
           </svg>
-          Classes
-        </button>
+          <span>All Classes</span>
+        </div>
       </nav>
     </div>
 
-    <script>
-      // ── Navigation ──────────────────────────────────────
-      const pages = {
-        home: 'Home',
-        mine: 'My Timetable',
-        classes: 'Class Timetables',
-      };
-      const subtitles = {
-        home: 'Welcome back, Joeyc',
-        mine: 'Your weekly schedule',
-        classes: 'Browse all class schedules',
-      };
-
-      function navigate(id) {
-        // Hide all pages
-        document
-          .querySelectorAll('.page')
-          .forEach((p) => p.classList.remove('active'));
-        document
-          .querySelectorAll('.nav-btn')
-          .forEach((b) => b.classList.remove('active'));
-
-        // Show selected
-        document.getElementById('page-' + id).classList.add('active');
-        document.getElementById('nav-' + id).classList.add('active');
-
-        // Update header
-        document.getElementById('page-title').textContent = pages[id];
-        document.getElementById('page-subtitle').textContent = subtitles[id];
-
-        // Scroll content back to top
-        document.getElementById('content').scrollTop = 0;
-      }
-
-      // ── Class tab switcher ───────────────────────────────
-      function showClass(classId) {
-        document
-          .querySelectorAll('.class-tab')
-          .forEach((t) => t.classList.remove('active'));
-        document
-          .querySelectorAll('.class-view')
-          .forEach((v) => v.classList.remove('active'));
-
-        document.getElementById(classId).classList.add('active');
-        event.target.classList.add('active');
-      }
-
-      // ── Service Worker registration ──────────────────────
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('sw.js').catch(() => {});
-        });
-      }
-    </script>
+    <script src="app.js"></script>
   </body>
 </html>

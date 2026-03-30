@@ -1,49 +1,500 @@
 {
-  "myTimetable": {
-    "label": "My Teaching Timetable",
-    "slots": [
-      { "time": "08:00", "mon": "Math",    "tue": "",        "wed": "Science", "thu": "",        "fri": "Math"    },
-      { "time": "09:00", "mon": "",        "tue": "English", "wed": "",        "thu": "Math",    "fri": ""        },
-      { "time": "10:00", "mon": "Science", "tue": "",        "wed": "English", "thu": "",        "fri": "Science" },
-      { "time": "11:00", "mon": "",        "tue": "Math",    "wed": "",        "thu": "English", "fri": ""        }
+  "term": "Term 2 \u00b7 Mon 6 Apr \u2013 Fri 5 Jun 2026",
+  "personal": {
+    "MON": [],
+    "TUE": [
+      {
+        "subject": "CMS",
+        "class": "R",
+        "room": "AM-K609",
+        "start": "09:00",
+        "end": "12:00"
+      },
+      {
+        "subject": "PRO",
+        "class": "R",
+        "room": "AM-K505",
+        "start": "13:00",
+        "end": "18:00"
+      }
+    ],
+    "WED": [
+      {
+        "subject": "CMS",
+        "class": "S",
+        "room": "AM-K609",
+        "start": "10:00",
+        "end": "12:00"
+      },
+      {
+        "subject": "CMS",
+        "class": "S",
+        "room": "AM-K609",
+        "start": "13:00",
+        "end": "14:00"
+      }
+    ],
+    "THU": [
+      {
+        "subject": "CMS",
+        "class": "R",
+        "room": "AM-K609",
+        "start": "08:00",
+        "end": "12:00"
+      },
+      {
+        "subject": "CMS",
+        "class": "R",
+        "room": "AM-K609",
+        "start": "13:00",
+        "end": "15:00"
+      },
+      {
+        "subject": "CMS",
+        "class": "S",
+        "room": "AM-K609",
+        "start": "15:00",
+        "end": "17:00"
+      }
+    ],
+    "FRI": [
+      {
+        "subject": "PRO",
+        "class": "R",
+        "room": "AM-K609",
+        "start": "09:00",
+        "end": "12:00"
+      },
+      {
+        "subject": "CMS",
+        "class": "S",
+        "room": "AM-K609",
+        "start": "13:00",
+        "end": "15:00"
+      }
     ]
   },
-  "classes": [
-    {
-      "id": "class1",
-      "label": "Class 1",
-      "slots": [
-        { "time": "08:00", "mon": "Math",    "tue": "Art",    "wed": "PE",      "thu": "Music",  "fri": "Math"    },
-        { "time": "09:00", "mon": "English", "tue": "Math",   "wed": "Science", "thu": "English","fri": "Science" },
-        { "time": "10:00", "mon": "Science", "tue": "English","wed": "Math",    "thu": "Art",    "fri": "English" }
+  "overview": {
+    "M": {
+      "MON": [
+        {
+          "subject": "IMA",
+          "room": "AM-K612",
+          "type": "PRA",
+          "start": "09:00",
+          "end": "12:00"
+        },
+        {
+          "subject": "IMA",
+          "room": "AM-K612",
+          "type": "THY",
+          "start": "13:00",
+          "end": "14:00"
+        },
+        {
+          "subject": "SW",
+          "room": "",
+          "type": "PRA",
+          "start": "14:00",
+          "end": "16:00"
+        }
+      ],
+      "TUE": [
+        {
+          "subject": "DRF",
+          "room": "AM-K711",
+          "type": "THY",
+          "start": "09:00",
+          "end": "10:00"
+        },
+        {
+          "subject": "DRF",
+          "room": "AM-K711",
+          "type": "PRA",
+          "start": "10:00",
+          "end": "13:00"
+        },
+        {
+          "subject": "CAH",
+          "room": "AM-K612",
+          "type": "THY",
+          "start": "14:00",
+          "end": "15:00"
+        },
+        {
+          "subject": "TYP",
+          "room": "AM-K612",
+          "type": "PRA",
+          "start": "13:00",
+          "end": "18:00"
+        }
+      ],
+      "WED": [
+        {
+          "subject": "DRF",
+          "room": "AM-K711",
+          "type": "PRA",
+          "start": "09:00",
+          "end": "12:00"
+        },
+        {
+          "subject": "LFS",
+          "room": "",
+          "type": "THY",
+          "start": "13:00",
+          "end": "16:00"
+        },
+        {
+          "subject": "TYP",
+          "room": "AM-K612",
+          "type": "PRA",
+          "start": "16:00",
+          "end": "18:00"
+        }
+      ],
+      "THU": [
+        {
+          "subject": "IMA",
+          "room": "AM-K612",
+          "type": "PRA",
+          "start": "13:00",
+          "end": "18:00"
+        }
+      ],
+      "FRI": [
+        {
+          "subject": "TYP",
+          "room": "AM-K612",
+          "type": "PRA",
+          "start": "09:00",
+          "end": "13:00"
+        },
+        {
+          "subject": "DRF",
+          "room": "AM-K711",
+          "type": "THY",
+          "start": "14:00",
+          "end": "18:00"
+        }
       ]
     },
-    {
-      "id": "class2",
-      "label": "Class 2",
-      "slots": [
-        { "time": "08:00", "mon": "English", "tue": "Math",    "wed": "Music",  "thu": "Science","fri": "Art"     },
-        { "time": "09:00", "mon": "Science", "tue": "PE",      "wed": "Math",   "thu": "Art",    "fri": "Math"    },
-        { "time": "10:00", "mon": "Math",    "tue": "Science", "wed": "English","thu": "Math",   "fri": "Science" }
+    "N": {
+      "MON": [
+        {
+          "subject": "LFS",
+          "room": "",
+          "type": "THY",
+          "start": "08:00",
+          "end": "10:00"
+        },
+        {
+          "subject": "DRF",
+          "room": "AM-K711",
+          "type": "PRA",
+          "start": "10:00",
+          "end": "13:00"
+        },
+        {
+          "subject": "IMA",
+          "room": "AM-K612",
+          "type": "PRA",
+          "start": "14:00",
+          "end": "18:00"
+        }
+      ],
+      "TUE": [
+        {
+          "subject": "TYP",
+          "room": "AM-K612",
+          "type": "PRA",
+          "start": "09:00",
+          "end": "11:00"
+        },
+        {
+          "subject": "IMA",
+          "room": "AM-K612",
+          "type": "PRA",
+          "start": "11:00",
+          "end": "13:00"
+        },
+        {
+          "subject": "CAH",
+          "room": "AM-K711",
+          "type": "THY",
+          "start": "14:00",
+          "end": "15:00"
+        }
+      ],
+      "WED": [
+        {
+          "subject": "IMA",
+          "room": "AM-K612",
+          "type": "THY",
+          "start": "09:00",
+          "end": "10:00"
+        },
+        {
+          "subject": "SW",
+          "room": "",
+          "type": "PRA",
+          "start": "10:00",
+          "end": "12:00"
+        },
+        {
+          "subject": "IMA",
+          "room": "AM-K612",
+          "type": "PRA",
+          "start": "13:00",
+          "end": "15:00"
+        }
+      ],
+      "THU": [
+        {
+          "subject": "TYP",
+          "room": "AM-K612",
+          "type": "PRA",
+          "start": "09:00",
+          "end": "12:00"
+        },
+        {
+          "subject": "TYP",
+          "room": "AM-K609",
+          "type": "THY",
+          "start": "12:00",
+          "end": "13:00"
+        },
+        {
+          "subject": "DRF",
+          "room": "AM-K711",
+          "type": "THY",
+          "start": "14:00",
+          "end": "15:00"
+        },
+        {
+          "subject": "DRF",
+          "room": "AM-K711",
+          "type": "PRA",
+          "start": "15:00",
+          "end": "18:00"
+        }
+      ],
+      "FRI": [
+        {
+          "subject": "TYP",
+          "room": "AM-K612",
+          "type": "PRA",
+          "start": "09:00",
+          "end": "12:00"
+        }
       ]
     },
-    {
-      "id": "class3",
-      "label": "Class 3",
-      "slots": [
-        { "time": "08:00", "mon": "Art",     "tue": "English", "wed": "Math",   "thu": "PE",     "fri": "English" },
-        { "time": "09:00", "mon": "Math",    "tue": "Science", "wed": "Art",    "thu": "Math",   "fri": "Science" },
-        { "time": "10:00", "mon": "English", "tue": "Math",    "wed": "Science","thu": "English","fri": "Math"    }
+    "R": {
+      "MON": [
+        {
+          "subject": "SW",
+          "room": "",
+          "type": "PRA",
+          "start": "08:00",
+          "end": "10:00"
+        },
+        {
+          "subject": "LFS",
+          "room": "",
+          "type": "THY",
+          "start": "10:00",
+          "end": "12:00"
+        },
+        {
+          "subject": "BEX",
+          "room": "AM-K609",
+          "type": "PRA",
+          "start": "13:00",
+          "end": "18:00"
+        }
+      ],
+      "TUE": [
+        {
+          "subject": "CMS",
+          "room": "AM-K609",
+          "type": "PRA",
+          "start": "09:00",
+          "end": "12:00"
+        },
+        {
+          "subject": "PRO",
+          "room": "AM-K505",
+          "type": "PRA",
+          "start": "14:00",
+          "end": "18:00"
+        }
+      ],
+      "WED": [
+        {
+          "subject": "BEX",
+          "room": "AM-K505",
+          "type": "PRA",
+          "start": "09:00",
+          "end": "13:00"
+        }
+      ],
+      "THU": [
+        {
+          "subject": "CMS",
+          "room": "AM-K609",
+          "type": "THY",
+          "start": "08:00",
+          "end": "09:00"
+        },
+        {
+          "subject": "CMS",
+          "room": "AM-K609",
+          "type": "PRA",
+          "start": "09:00",
+          "end": "12:00"
+        },
+        {
+          "subject": "CMS",
+          "room": "AM-K609",
+          "type": "PRA",
+          "start": "13:00",
+          "end": "15:00"
+        }
+      ],
+      "FRI": [
+        {
+          "subject": "PRO",
+          "room": "AM-K609",
+          "type": "THY",
+          "start": "08:00",
+          "end": "09:00"
+        },
+        {
+          "subject": "PRO",
+          "room": "AM-K609",
+          "type": "PRA",
+          "start": "09:00",
+          "end": "12:00"
+        },
+        {
+          "subject": "CAH",
+          "room": "AM-K609",
+          "type": "THY",
+          "start": "12:00",
+          "end": "13:00"
+        }
       ]
     },
-    {
-      "id": "class4",
-      "label": "Class 4",
-      "slots": [
-        { "time": "08:00", "mon": "Science", "tue": "Art",     "wed": "English","thu": "Math",   "fri": "PE"      },
-        { "time": "09:00", "mon": "Art",     "tue": "English", "wed": "Science","thu": "Science","fri": "Math"    },
-        { "time": "10:00", "mon": "Math",    "tue": "Math",    "wed": "Art",    "thu": "English","fri": "Science" }
+    "S": {
+      "MON": [
+        {
+          "subject": "PRO",
+          "room": "AM-K609",
+          "type": "PRA",
+          "start": "09:00",
+          "end": "12:00"
+        },
+        {
+          "subject": "PRO",
+          "room": "AM-K711",
+          "type": "THY",
+          "start": "14:00",
+          "end": "15:00"
+        }
+      ],
+      "TUE": [
+        {
+          "subject": "PRO",
+          "room": "AM-K505",
+          "type": "PRA",
+          "start": "08:00",
+          "end": "12:00"
+        },
+        {
+          "subject": "BEX",
+          "room": "AM-K609",
+          "type": "PRA",
+          "start": "13:00",
+          "end": "18:00"
+        }
+      ],
+      "WED": [
+        {
+          "subject": "SW",
+          "room": "",
+          "type": "PRA",
+          "start": "08:00",
+          "end": "10:00"
+        },
+        {
+          "subject": "CMS",
+          "room": "AM-K609",
+          "type": "PRA",
+          "start": "10:00",
+          "end": "12:00"
+        },
+        {
+          "subject": "CMS",
+          "room": "AM-K609",
+          "type": "PRA",
+          "start": "13:00",
+          "end": "15:00"
+        },
+        {
+          "subject": "CMS",
+          "room": "AM-K609",
+          "type": "THY",
+          "start": "15:00",
+          "end": "16:00"
+        },
+        {
+          "subject": "CAH",
+          "room": "AM-K711",
+          "type": "THY",
+          "start": "16:00",
+          "end": "17:00"
+        }
+      ],
+      "THU": [
+        {
+          "subject": "LFS",
+          "room": "",
+          "type": "THY",
+          "start": "13:00",
+          "end": "15:00"
+        },
+        {
+          "subject": "CMS",
+          "room": "AM-K609",
+          "type": "PRA",
+          "start": "15:00",
+          "end": "17:00"
+        }
+      ],
+      "FRI": [
+        {
+          "subject": "BEX",
+          "room": "AM-K505",
+          "type": "THY",
+          "start": "08:00",
+          "end": "09:00"
+        },
+        {
+          "subject": "BEX",
+          "room": "AM-K505",
+          "type": "PRA",
+          "start": "09:00",
+          "end": "12:00"
+        },
+        {
+          "subject": "CMS",
+          "room": "AM-K609",
+          "type": "PRA",
+          "start": "13:00",
+          "end": "15:00"
+        }
       ]
     }
-  ]
+  },
+  "version": "2.0",
+  "updated": "2026-03-28"
 }
