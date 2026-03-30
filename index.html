@@ -38,9 +38,15 @@
         --safe-bottom: env(safe-area-inset-bottom, 0px);
       }
 
-      html,
+      html {
+        height: 100%;
+        height: -webkit-fill-available;
+      }
+
       body {
         height: 100%;
+        min-height: 100vh;
+        min-height: -webkit-fill-available;
         font-family:
           -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         background: var(--bg);
@@ -53,7 +59,8 @@
         display: flex;
         flex-direction: column;
         height: 100%;
-        height: 100dvh;
+        min-height: 100vh;
+        min-height: -webkit-fill-available;
       }
 
       /* ── Top header ── */
@@ -84,6 +91,8 @@
         flex: 1;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
+        /* Leave room for the fixed bottom nav + home indicator */
+        padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px));
       }
 
       /* ── Pages ── */
@@ -281,8 +290,13 @@
         display: flex;
         background: var(--surface);
         border-top: 1px solid var(--border);
-        padding-bottom: var(--safe-bottom);
-        flex-shrink: 0;
+        /* Fixed to actual screen bottom — reliable on all iOS standalone modes */
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        /* Push buttons up above the home indicator */
+        padding-bottom: env(safe-area-inset-bottom, 0px);
         z-index: 20;
         box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.06);
       }
@@ -378,7 +392,7 @@
 
           <p class="section-title">Overview</p>
           <div class="card">
-            <h2>Timetable App</h2>
+            <h2>📅 Timetable App</h2>
             <p>
               Use the bottom navigation to view your personal teaching timetable
               or browse timetables for all 4 classes.
