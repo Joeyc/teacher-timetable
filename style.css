@@ -512,26 +512,36 @@ body {
   right: 0;
   z-index: 100;
   box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.06);
-  /* Extend nav background into home indicator zone.
-     - In Safari browser: env() is typically 0 (browser chrome handles it)
-     - In PWA standalone: env() = ~34px (home indicator height)
-     This fills the gap so no background bleeds through below the nav. */
-  padding-bottom: env(safe-area-inset-bottom, 0px);
+  /* No extra padding in Safari browser — the browser chrome handles
+     the home indicator, so the nav stays exactly --nav-height tall */
+  padding-bottom: 0;
+}
+
+/* In PWA standalone mode the home indicator is part of the web viewport,
+   so we extend the nav background into that zone to avoid a bare gap */
+@media (display-mode: standalone) {
+  #tabbar {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  /* Ensure content isn't hidden under the taller nav in standalone */
+  .view {
+    padding-bottom: calc(var(--nav-height) + env(safe-area-inset-bottom, 0px) + 32px);
+  }
 }
 
 .tab {
-  height: 40px;
+  height: var(--nav-height); /* 54px — enough room for icon + gap + label */
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  padding: 10px 4px;
+  gap: 3px;
+  padding: 8px 4px;
   background: none;
   border: none;
   cursor: pointer;
-  color: var(--text-muted);
+  color: var(--sub);
   font-size: 11px;
   font-weight: 500;
   transition: color 0.15s;

@@ -386,7 +386,11 @@ async function boot() {
   if (cached) {
     DATA = cached;
     render();
-    document.getElementById('loading').classList.add('hidden');
+    // Use rAF so the loading screen gets at least one painted frame
+    // before being hidden — prevents invisible flash on fast cache hits
+    requestAnimationFrame(() => {
+      document.getElementById('loading').classList.add('hidden');
+    });
     showFooterMeta(DATA);
     startTick();
   }
