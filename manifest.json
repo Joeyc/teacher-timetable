@@ -4,6 +4,7 @@
   "description": "Class and teaching timetable viewer",
   "start_url": "./index.html",
   "display": "standalone",
+  "display_override": ["fullscreen", "minimal-ui"],
   "background_color": "#f8fafc",
   "theme_color": "#2563eb",
   "orientation": "portrait",
