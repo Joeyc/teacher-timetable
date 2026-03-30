@@ -27,6 +27,8 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+  position: fixed;
   overflow: hidden;
   background-color: var(--surface);
   font-family: 'DM Sans', sans-serif;
@@ -43,7 +45,8 @@ body {
      different value than dvh in browser mode, leaving a gap at the bottom */
   margin-top: 0;
   padding-top: env(safe-area-inset-top, 0px);
-  position: relative;
+  position: fixed;
+  inset: 0;
   /* Extend background behind the status bar */
   background-color: var(--bg);
 }
@@ -513,6 +516,7 @@ body {
   /* No extra padding in Safari browser — the browser chrome handles
      the home indicator, so the nav stays exactly --nav-height tall */
   padding-bottom: env(safe-area-inset-bottom, 0px);
+  height: calc(var(--nav-height) + env(safe-area-inset-bottom, 0px));
 }
 
 .tab {
