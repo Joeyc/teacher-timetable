@@ -512,7 +512,7 @@ body {
 }
 
 .tab {
-  height: var(--nav-height);
+  height: 40px;
   flex: 1;
   display: flex;
   flex-direction: column;
