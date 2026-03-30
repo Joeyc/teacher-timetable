@@ -1,0 +1,29 @@
+# macOS
+.DS_Store
+
+# Node dependencies
+node_modules/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment variables
+.env
+.env.*
+!.env.example
+.dev.vars
+
+# Cloudflare / Wrangler
+.wrangler/
+
+# Build output
+build/
+dist/
+coverage/
+
+# Editor folders
+.vscode/
+.idea/
