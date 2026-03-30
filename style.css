@@ -22,10 +22,13 @@
   --nav-height: 54px;
 }
 
-html,
+html {
+  /* Stable full-screen height — dvh tracks the visual viewport correctly on iOS */
+  height: 100%;
+}
+
 body {
-  /* Use dvh to ensure it's exactly the visible screen height */
-  height: 100dvh;
+  height: 100%;
   margin: 0;
   padding: 0;
   overflow: hidden;
@@ -37,10 +40,14 @@ body {
 #app {
   display: flex;
   flex-direction: column;
-  height: 100dvh; /* Force the app container to be exactly the screen size */
-  min-height: 100vh;
-  min-height: -webkit-fill-available;
+  /* dvh: expands to fill screen as Safari toolbar hides, shrinks when it shows.
+     100% height on html/body above ensures this always equals the screen. */
+  height: 100dvh;
+  /* Remove conflicting min-height: -webkit-fill-available — it gave a
+     different value than dvh in browser mode, leaving a gap at the bottom */
   padding-top: env(safe-area-inset-top, 0px);
+  /* Extend background behind the status bar */
+  background-color: var(--bg);
 }
 
 /* ── Page content area ── */
@@ -499,16 +506,17 @@ body {
   display: flex;
   background: var(--surface);
   border-top: 1px solid var(--border);
-  /* Fixed to actual screen bottom — reliable on all iOS standalone modes */
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  /* Push buttons up above the home indicator */
-  height: auto;
-  padding-bottom: env(safe-area-inset-bottom, 0px);
   z-index: 100;
   box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.06);
+  /* Extend nav background into home indicator zone.
+     - In Safari browser: env() is typically 0 (browser chrome handles it)
+     - In PWA standalone: env() = ~34px (home indicator height)
+     This fills the gap so no background bleeds through below the nav. */
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 .tab {
