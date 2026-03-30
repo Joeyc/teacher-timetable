@@ -20,7 +20,6 @@
   --now-bg: rgba(45, 138, 94, 0.08);
   --now-border: rgba(45, 138, 94, 0.25);
   --nav-height: 54px;
-  --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 html,
@@ -41,6 +40,7 @@ body {
   height: 100dvh; /* Force the app container to be exactly the screen size */
   min-height: 100vh;
   min-height: -webkit-fill-available;
+  padding-top: env(safe-area-inset-top, 0px);
 }
 
 /* ── Page content area ── */
@@ -49,7 +49,7 @@ body {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   /* Leave room for the fixed bottom nav + home indicator */
-  padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px));
+  padding-bottom: calc(54px + env(safe-area-inset-bottom, 0px));
 }
 
 /* ── Views ── */
