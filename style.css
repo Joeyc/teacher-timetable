@@ -22,11 +22,7 @@
   --nav-height: 54px;
 }
 
-html {
-  /* Stable full-screen height — dvh tracks the visual viewport correctly on iOS */
-  height: 100%;
-}
-
+html,
 body {
   height: 100%;
   margin: 0;
@@ -40,12 +36,14 @@ body {
 #app {
   display: flex;
   flex-direction: column;
-  /* dvh: expands to fill screen as Safari toolbar hides, shrinks when it shows.
-     100% height on html/body above ensures this always equals the screen. */
+  /* Use fill-available as a fallback for older iOS, and dvh for modern */
+  height: 100vh;
   height: 100dvh;
   /* Remove conflicting min-height: -webkit-fill-available — it gave a
      different value than dvh in browser mode, leaving a gap at the bottom */
+  margin-top: 0;
   padding-top: env(safe-area-inset-top, 0px);
+  position: relative;
   /* Extend background behind the status bar */
   background-color: var(--bg);
 }
@@ -76,7 +74,7 @@ body {
     opacity 0.22s ease,
     transform 0.22s ease;
   padding-bottom: calc(
-    var(--nav-height) + env(safe-area-inset-bottom, 0px) + 32px
+    var(--nav-height) + env(safe-area-inset-bottom, 16px) + 20px
   );
   /* prevent text selection cursor on drag */
   -webkit-user-select: none;
@@ -514,19 +512,7 @@ body {
   box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.06);
   /* No extra padding in Safari browser — the browser chrome handles
      the home indicator, so the nav stays exactly --nav-height tall */
-  padding-bottom: 0;
-}
-
-/* In PWA standalone mode the home indicator is part of the web viewport,
-   so we extend the nav background into that zone to avoid a bare gap */
-@media (display-mode: standalone) {
-  #tabbar {
-    padding-bottom: env(safe-area-inset-bottom, 0px);
-  }
-  /* Ensure content isn't hidden under the taller nav in standalone */
-  .view {
-    padding-bottom: calc(var(--nav-height) + env(safe-area-inset-bottom, 0px) + 32px);
-  }
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 .tab {
