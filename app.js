@@ -179,34 +179,92 @@ function renderToday() {
 // ── Render: MY TIMETABLE ─────────────────────────────────────
 function renderMine() {
   document.getElementById('mine-term').textContent = DATA.term || '';
-  document.getElementById('mine-week').innerHTML = weekDates()
-    .map(({ code, full, isToday, dateStr }) => {
-      const cls = DATA.personal[code] || [];
-      return `<div class="day-block${isToday ? ' is-today' : ''}">
-      <div class="day-hdr">
-        <div><div class="dname">${full.toUpperCase()}</div><div class="ddate">${dateStr}</div></div>
-        ${isToday ? `<div class="today-pill">Today</div>` : ''}
+
+  const dates    = weekDates();
+  const mineWrap = document.getElementById('mine-week');
+
+  // Gather all classes this week to determine the shared time range
+  const allClasses = [];
+  DAYS.forEach((d) => (DATA.personal[d] || []).forEach((c) => allClasses.push(c)));
+
+  if (!allClasses.length) {
+    mineWrap.innerHTML = `<div style="text-align:center;padding:48px 20px">
+      <div style="font-size:36px">🎉</div>
+      <div style="color:var(--sub);margin-top:10px;font-size:15px">No classes this week</div>
+    </div>`;
+    return;
+  }
+
+  const startHour = Math.min(...allClasses.map((c) => parseInt(c.start)));
+  const endHour   = Math.max(...allClasses.map((c) => parseInt(c.end)));
+  const PX        = 64;
+  const totalH    = (endHour - startHour) * PX;
+
+  const today = dayCode();
+  const nowM  = nowMin();
+
+  // Day column headers (day name + date)
+  const dayHdrs = dates
+    .map(({ code, full, isToday, dateStr }) =>
+      `<div class="tg-day-hdr${isToday ? ' is-today' : ''}">
+        <div class="tg-day-name">${full.toUpperCase()}</div>
+        <div class="tg-day-date">${dateStr}</div>
+      </div>`,
+    ).join('');
+
+  // Hour ticks + grid lines (same clamp logic as overview)
+  let ticks = '', lines = '';
+  for (let h = startHour; h <= endHour; h++) {
+    const y  = (h - startHour) * PX;
+    const tr = h === startHour ? 'translateY(2px)' : h === endHour ? 'translateY(-100%)' : 'translateY(-50%)';
+    ticks += `<div class="tg-tick" style="top:${y}px;transform:${tr}">${String(h).padStart(2, '0')}:00</div>`;
+    lines += `<div class="tg-line" style="top:${y}px"></div>`;
+  }
+
+  // One column per weekday
+  const colW = 100 / DAYS.length;
+  const GRP_COL = { M: '#6B8EC9', N: '#9B6BC9', R: '#C96B6B', S: '#C9A847' };
+  const cols = dates
+    .map(({ code, isToday }, i) => {
+      const classes = DATA.personal[code] || [];
+      const blocks  = classes.map((c) => {
+        const top     = ((toMin(c.start) - startHour * 60) / 60) * PX;
+        const h       = Math.max(((toMin(c.end) - toMin(c.start)) / 60) * PX - 4, 20);
+        const col     = sCol(c.subject);
+        const grpCol  = GRP_COL[c.class] || col;
+        const showGrp = h >= 28 && c.class;
+        const showRm  = h >= 44 && c.room;
+        return `<div class="tg-block" style="top:${top}px;height:${h}px;border-color:${col};background:${col}18">
+          <div class="tg-subj" style="color:${col}">${c.subject}</div>
+          ${showGrp ? `<div class="tg-detail" style="color:${grpCol};font-weight:700">${c.class}</div>` : ''}
+          ${showRm  ? `<div class="tg-detail">${c.room}</div>` : ''}
+        </div>`;
+      }).join('');
+      const bg = isToday ? 'rgba(184,135,42,0.05)' : 'transparent';
+      return `<div class="tg-col" style="left:${i * colW}%;width:${colW}%;background:${bg}">${blocks}</div>`;
+    }).join('');
+
+  // "Now" line — only on a weekday within the grid's time range
+  const nowOffsetMin = nowM - startHour * 60;
+  const showNow = DAYS.includes(today)
+    && nowOffsetMin >= 0
+    && nowOffsetMin <= (endHour - startHour) * 60;
+  const nowTop = (nowOffsetMin / 60) * PX;
+
+  mineWrap.innerHTML = `
+    <div class="tg">
+      <div class="tg-head">
+        <div class="tg-corner"></div>
+        <div class="tg-hdrs">${dayHdrs}</div>
       </div>
-      <div class="day-rows">${
-        cls.length
-          ? cls
-              .map(
-                (c) => `<div class="day-row">
-            <div class="dot" style="background:${sCol(c.subject || c.label)}"></div>
-            <div class="rtime">${c.start || c.startTime}${c.end || c.endTime ? '–' + (c.end || c.endTime) : ''}</div>
-            <div class="rinfo">
-              <div class="rname">${c.subject || c.label || ''}${c.class ? ` <span style="font-size:10px;font-weight:700;padding:1px 5px;border-radius:4px;background:${{ M: '#6B8EC9', N: '#9B6BC9', R: '#C96B6B', S: '#C9A847' }[c.class] || '#888'}22;color:${{ M: '#6B8EC9', N: '#9B6BC9', R: '#C96B6B', S: '#C9A847' }[c.class] || '#888'};vertical-align:middle">(${c.class})</span>` : ''}</div>
-              ${c.room ? `<div class="rroom">${c.room}</div>` : ''}
-            </div>
-          </div>`,
-              )
-              .join('')
-          : `<div class="day-empty">No classes</div>`
-      }
+      <div class="tg-content">
+        <div class="tg-axis" style="height:${totalH}px">${ticks}</div>
+        <div class="tg-body" style="height:${totalH}px">
+          ${lines}${cols}
+          ${showNow ? `<div class="tg-now" style="top:${nowTop}px"><div class="tg-now-dot"></div></div>` : ''}
+        </div>
       </div>
     </div>`;
-    })
-    .join('');
 }
 
 // ── Render: ALL CLASSES ──────────────────────────────────────
@@ -265,10 +323,12 @@ function renderOverview() {
   const nowTop = (nowOffsetMin / 60) * PX;
 
   // Hour ticks + grid lines
+  // First/last labels are anchored flush so they don't get clipped
   let ticks = '', lines = '';
   for (let h = startHour; h <= endHour; h++) {
     const y = (h - startHour) * PX;
-    ticks += `<div class="tg-tick" style="top:${y}px">${String(h).padStart(2, '0')}:00</div>`;
+    const tr = h === startHour ? 'translateY(2px)' : h === endHour ? 'translateY(-100%)' : 'translateY(-50%)';
+    ticks += `<div class="tg-tick" style="top:${y}px;transform:${tr}">${String(h).padStart(2, '0')}:00</div>`;
     lines += `<div class="tg-line" style="top:${y}px"></div>`;
   }
 

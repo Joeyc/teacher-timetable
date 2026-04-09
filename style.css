@@ -298,12 +298,34 @@ body {
   flex-shrink: 0;
   text-transform: uppercase;
 }
-/* Week view */
+/* Week view — now uses the shared hour-grid (.tg) layout */
 .week-wrap {
-  padding: 12px 16px 0;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  padding: 0 16px 16px;
+}
+
+/* Day-column headers (used in My Schedule weekly grid) */
+.tg-day-hdr {
+  flex: 1;
+  text-align: center;
+  padding: 8px 2px 6px;
+  border-bottom: 2px solid transparent;
+}
+.tg-day-hdr.is-today {
+  border-bottom-color: var(--gold);
+}
+.tg-day-name {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--text);
+}
+.tg-day-hdr.is-today .tg-day-name {
+  color: var(--gold);
+}
+.tg-day-date {
+  font-size: 10px;
+  color: var(--sub);
+  margin-top: 2px;
 }
 .day-block {
   background: var(--surface);
