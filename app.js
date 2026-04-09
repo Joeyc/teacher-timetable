@@ -233,56 +233,84 @@ function renderOverview() {
         ${g}</button>`;
     }).join('');
 
-  // Collect all start times for active groups on this day
-  const times = new Set();
-  GROUPS.filter((g) => activeGroups.has(g)).forEach((g) => {
+  // ── Hour-grid timeline ───────────────────────────────────────
+  const selectedGroups = GROUPS.filter((g) => activeGroups.has(g));
+  const allClasses = [];
+  selectedGroups.forEach((g) => {
     ((DATA.overview[g] || {})[activeDay] || []).forEach((c) =>
-      times.add(c.start),
+      allClasses.push({ ...c, group: g }),
     );
   });
-  const sorted = [...times].sort((a, b) => toMin(a) - toMin(b));
 
-  if (!sorted.length) {
-    document.getElementById('ov-wrap').innerHTML =
-      `<div class="empty"><span class="ico"></span>No classes on ${DAY_FULL[activeDay]}</div>`;
+  const wrap = document.getElementById('ov-wrap');
+
+  if (!allClasses.length) {
+    wrap.innerHTML = `<div class="empty"><span class="ico"></span>No classes on ${DAY_FULL[activeDay]}</div>`;
     return;
   }
 
-  document.getElementById('ov-wrap').innerHTML = sorted
-    .map((t) => {
-      const entries = [];
-      GROUPS.filter((g) => activeGroups.has(g)).forEach((g) => {
-        ((DATA.overview[g] || {})[activeDay] || [])
-          .filter((c) => c.start === t)
-          .forEach((c) => entries.push({ ...c, group: g }));
-      });
-      if (!entries.length) return '';
-      const latestEnd =
-        [...entries.map((e) => e.end)]
-          .filter(Boolean)
-          .sort((a, b) => toMin(b) - toMin(a))[0] || '';
-      const rows = entries
-        .map(
-          (e) => `
-      <div class="ov-class-row">
-        <div class="ov-bar" style="background:${GC[e.group]}"></div>
-        <div class="ov-grp-badge" style="background:${GC[e.group]}22;color:${GC[e.group]}">${e.group}</div>
-        <div class="ov-class-info">
-          <div class="ov-class-name">${e.subject}<span class="ov-class-type">${e.type || ''}</span></div>
-          <div class="ov-class-room">${e.room || '—'}</div>
-        </div>
-      </div>`,
-        )
-        .join('');
-      return `<div class="ov-time-block">
-      <div class="ov-time-hdr">
-        <div class="ov-time-label">${t}</div>
-        <div class="ov-time-end">${latestEnd ? 'until ' + latestEnd : ''}</div>
+  // Time bounds
+  const startHour = Math.min(...allClasses.map((c) => parseInt(c.start)));
+  const endHour   = Math.max(...allClasses.map((c) => parseInt(c.end)));
+  const PX        = 64; // pixels per hour
+  const totalH    = (endHour - startHour) * PX;
+
+  // "Now" indicator — only shown when viewing today
+  const todayCode    = dayCode();
+  const nowM         = nowMin();
+  const nowOffsetMin = nowM - startHour * 60;
+  const showNow      = activeDay === todayCode
+    && nowOffsetMin >= 0
+    && nowOffsetMin <= (endHour - startHour) * 60;
+  const nowTop = (nowOffsetMin / 60) * PX;
+
+  // Hour ticks + grid lines
+  let ticks = '', lines = '';
+  for (let h = startHour; h <= endHour; h++) {
+    const y = (h - startHour) * PX;
+    ticks += `<div class="tg-tick" style="top:${y}px">${String(h).padStart(2, '0')}:00</div>`;
+    lines += `<div class="tg-line" style="top:${y}px"></div>`;
+  }
+
+  // One column per selected group — class blocks absolutely positioned by time
+  const colW = 100 / selectedGroups.length;
+  const cols = selectedGroups.map((g, i) => {
+    const dayClasses = (DATA.overview[g] || {})[activeDay] || [];
+    const blocks = dayClasses.map((c) => {
+      const top = ((toMin(c.start) - startHour * 60) / 60) * PX;
+      const h   = Math.max(((toMin(c.end) - toMin(c.start)) / 60) * PX - 4, 20);
+      const col = GC[g];
+      // Show room only if block is tall enough
+      const showRoom = h >= 36 && c.room;
+      const showType = h >= 52 && c.type;
+      return `<div class="tg-block" style="top:${top}px;height:${h}px;border-color:${col};background:${col}18;">
+        <div class="tg-subj" style="color:${col}">${c.subject}</div>
+        ${showRoom ? `<div class="tg-detail">${c.room}</div>` : ''}
+        ${showType ? `<div class="tg-detail tg-type">${c.type}</div>` : ''}
+      </div>`;
+    }).join('');
+    return `<div class="tg-col" style="left:${i * colW}%;width:${colW}%">${blocks}</div>`;
+  }).join('');
+
+  // Group header badges
+  const grpHdrs = selectedGroups.map((g) =>
+    `<div class="tg-grp-hdr" style="color:${GC[g]};border-bottom:2px solid ${GC[g]}88">${g}</div>`,
+  ).join('');
+
+  wrap.innerHTML = `
+    <div class="tg">
+      <div class="tg-head">
+        <div class="tg-corner"></div>
+        <div class="tg-hdrs">${grpHdrs}</div>
       </div>
-      <div class="ov-classes">${rows}</div>
+      <div class="tg-content">
+        <div class="tg-axis" style="height:${totalH}px">${ticks}</div>
+        <div class="tg-body" style="height:${totalH}px">
+          ${lines}${cols}
+          ${showNow ? `<div class="tg-now"><div class="tg-now-dot"></div></div>`.replace('style=""', `style="top:${nowTop}px"`).replace('<div class="tg-now">', `<div class="tg-now" style="top:${nowTop}px">`) : ''}
+        </div>
+      </div>
     </div>`;
-    })
-    .join('');
 }
 
 function setDay(d) {
