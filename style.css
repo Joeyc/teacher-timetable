@@ -156,6 +156,9 @@ body {
   letter-spacing: 0.12em;
   font-weight: 600;
   padding: 18px 20px 8px;
+  /* Allow the "This Week · Term …" label to wrap on narrow screens */
+  white-space: normal;
+  line-height: 1.4;
 }
 /* Next banner */
 .next-banner {
