@@ -125,7 +125,7 @@
           "subject": "TYP",
           "room": "AM-K612",
           "type": "PRA",
-          "start": "13:00",
+          "start": "15:00",
           "end": "18:00"
         }
       ],
@@ -142,13 +142,13 @@
           "room": "",
           "type": "THY",
           "start": "13:00",
-          "end": "16:00"
+          "end": "15:00"
         },
         {
           "subject": "TYP",
           "room": "AM-K612",
           "type": "PRA",
-          "start": "16:00",
+          "start": "15:00",
           "end": "18:00"
         }
       ],
@@ -166,15 +166,8 @@
           "subject": "TYP",
           "room": "AM-K612",
           "type": "PRA",
-          "start": "09:00",
-          "end": "13:00"
-        },
-        {
-          "subject": "DRF",
-          "room": "AM-K711",
-          "type": "THY",
-          "start": "14:00",
-          "end": "18:00"
+          "start": "12:00",
+          "end": "15:00"
         }
       ]
     },
